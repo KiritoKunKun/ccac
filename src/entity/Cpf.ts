@@ -1,66 +1,51 @@
 export default class Cpf {
-  readonly VALID_CPF_LENGTH = 11;
+	private readonly VALID_CPF_LENGTH = 11;
 
-  readonly isValid: boolean;
+	constructor(readonly value: string) {
+		this.value = this.cleanCpf(value);
+		if (!this.validate()) {
+			throw new Error('Invalid cpf!');
+		}
+	}
 
-  constructor(readonly cpf: string) {
-    this.cpf = this.clearCpf(cpf);
-    this.isValid = this.validateCpf();
-  }
+	private cleanCpf(cpf: string): string {
+		return cpf.replace(/\D/g, '');
+	}
 
-  private clearCpf(cpf: string): string {
-    return cpf
-      .replace(".", "")
-      .replace(".", "")
-      .replace("-", "")
-      .replace(" ", "");
-  }
+	private validate(): boolean {
+		if (!this.isValidLength() || this.allNumbersAreEqual()) {
+			throw new Error('Invalid cpf!');
+		}
 
-  private validateCpf(): boolean {
-    if (!this.isValidLength() || this.allNumbersAreEqual()) {
-      throw new Error("Invalid Cpf!");
-    }
+		const firstCheckDigit = this.calculateDigit(10);
+		const secondCheckDigit = this.calculateDigit(11);
+		const checkDigits = `${firstCheckDigit}${secondCheckDigit}`;
+		return this.allCheckDigitsAreValid(checkDigits);
+	}
 
-    const firstCheckDigit = this.getFirstCheckDigit();
-    const secondCheckDigit = this.getSecondCheckDigit(firstCheckDigit);
-    const checkDigits = `${firstCheckDigit}${secondCheckDigit}`;
-    return this.allCheckDigitsAreValid(checkDigits);
-  }
+	private isValidLength() {
+		return this.value.length === this.VALID_CPF_LENGTH;
+	}
 
-  private isValidLength() {
-    return this.cpf.length === this.VALID_CPF_LENGTH;
-  }
+	private allNumbersAreEqual() {
+		const [firstDigit] = this.value;
+		return this.value.split('').every((digit) => digit === firstDigit);
+	}
 
-  private allNumbersAreEqual() {
-    return this.cpf.split("").every((c) => c === this.cpf[0]);
-  }
+	private calculateDigit(factor: number) {
+		let total = 0;
+		for (const digit of this.value) {
+			if (factor > 1) total += parseInt(digit) * factor--;
+		}
+		const rest = total % 11;
+		return rest < 2 ? 0 : 11 - rest;
+	}
 
-  private getFirstCheckDigit() {
-    let sum = 0;
-    for (let i = 1; i < 10; i++) {
-      const digit = parseInt(this.cpf.substring(i - 1, i));
-      sum += (11 - i) * digit;
-    }
-    return this.getCheckDigitBySum(sum);
-  }
+	private allCheckDigitsAreValid(checkDigits: string) {
+		return checkDigits === this.extractDigits();
+	}
 
-  private getSecondCheckDigit(firstCheckDigit: number) {
-    let sum = firstCheckDigit * 2;
-    for (let i = 1; i < 10; i++) {
-      const digit = parseInt(this.cpf.substring(i - 1, i));
-      sum += (12 - i) * digit;
-    }
-    return this.getCheckDigitBySum(sum);
-  }
-
-  private getCheckDigitBySum(sum: number) {
-    const rest = sum % 11;
-    return rest < 2 ? 0 : 11 - rest;
-  }
-
-  private allCheckDigitsAreValid(checkDigits: string) {
-    return (
-      this.cpf.substring(this.cpf.length - 2, this.cpf.length) === checkDigits
-    );
-  }
+	private extractDigits() {
+		return this.value.slice(9);
+	}
 }

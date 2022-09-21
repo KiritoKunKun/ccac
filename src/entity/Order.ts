@@ -1,32 +1,31 @@
-import Cpf from "./Cpf";
-import Discount from "./Discount";
-import Item from "./Item";
+import Coupon from './Coupon';
+import Cpf from './Cpf';
+import Item from './Item';
+import OrderItem from './OrderItem';
 
 export default class Order {
-  total: number;
+	orderItems: OrderItem[];
+	coupon?: Coupon;
 
-  constructor(
-    readonly cpf: Cpf,
-    readonly items: Item[],
-    readonly discount?: Discount
-  ) {
-    if (!cpf.isValid) {
-      throw new Error("Cannot create an order with an invalid cpf!");
-    }
+	constructor(readonly cpf: Cpf) {
+		this.orderItems = [];
+	}
 
-    this.total = this.calculateTotal();
-  }
+	addItem(item: Item, quantity: number) {
+		this.orderItems.push(new OrderItem(item.id, item.price, quantity));
+	}
 
-  private calculateTotal() {
-    let total = this.items.reduce(
-      (acc, cur) => (acc += cur.price * cur.quantity),
-      0
-    );
+	addCupom(coupon: Coupon) {
+		this.coupon = coupon;
+	}
 
-    if (this.discount) {
-      total *= 1 - this.discount.percentage;
-    }
+	getTotal() {
+		let total = this.orderItems.reduce((total, orderItem) => (total += orderItem.getTotal()), 0);
 
-    return total;
-  }
+		if (this.coupon) {
+			total -= this.coupon.calculateDiscount(total);
+		}
+
+		return total;
+	}
 }
