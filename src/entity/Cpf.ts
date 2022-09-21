@@ -3,9 +3,7 @@ export default class Cpf {
 
 	constructor(readonly value: string) {
 		this.value = this.cleanCpf(value);
-		if (!this.validate()) {
-			throw new Error('Invalid cpf!');
-		}
+		if (!this.validate()) throw new Error('Invalid cpf!');
 	}
 
 	private cleanCpf(cpf: string): string {
@@ -13,10 +11,8 @@ export default class Cpf {
 	}
 
 	private validate(): boolean {
-		if (!this.isValidLength() || this.allNumbersAreEqual()) {
-			throw new Error('Invalid cpf!');
-		}
-
+		if (!this.isValidLength()) return false;
+		if (this.allNumbersAreEqual()) return false;
 		const firstCheckDigit = this.calculateDigit(10);
 		const secondCheckDigit = this.calculateDigit(11);
 		const checkDigits = `${firstCheckDigit}${secondCheckDigit}`;

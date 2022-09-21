@@ -21,11 +21,9 @@ export default class Order {
 
 	getTotal() {
 		let total = this.orderItems.reduce((total, orderItem) => (total += orderItem.getTotal()), 0);
-
 		if (this.coupon) {
 			total -= this.coupon.calculateDiscount(total);
 		}
-
 		return total;
 	}
 }

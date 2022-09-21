@@ -1,8 +1,6 @@
 export default class Coupon {
 	constructor(readonly code: string, readonly percentage: number) {
-		if (!this.isPercentageValid()) {
-			throw new Error('Invalid discount percentage!');
-		}
+		if (!this.isPercentageValid()) throw new Error('Invalid discount percentage!');
 	}
 
 	private isPercentageValid() {
