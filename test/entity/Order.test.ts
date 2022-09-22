@@ -32,12 +32,21 @@ test('Não deve aplicar um cupom de desconto expirado ao pedido', function () {
 	order.addItem(new Item('3', 'Meia', 20), 2);
 	const date = new Date();
 	date.setDate(date.getDate() - 1);
-	expect(() => order.addCupom(new Coupon('VALE20', 20, date))).toThrow(new Error('Expired coupon!'));
+	expect(() => order.addCupom(new Coupon('VALE20', 20, date))).toThrow(new Error('Expired coupon.'));
 });
 
 test('A quantidade de itens no pedido não pode ser menor ou igual a zero', function () {
 	const cpf = new Cpf('835.179.250-04');
 	const order = new Order(cpf);
-	expect(() => order.addItem(new Item('1', 'Camiseta', 100), -1)).toThrow(new Error('Invalid item quantity!'));
-	expect(() => order.addItem(new Item('1', 'Camiseta', 100), 0)).toThrow(new Error('Invalid item quantity!'));
+	expect(() => order.addItem(new Item('1', 'Camiseta', 100), -1)).toThrow(new Error('Invalid item quantity.'));
+	expect(() => order.addItem(new Item('1', 'Camiseta', 100), 0)).toThrow(new Error('Invalid item quantity.'));
+});
+
+test('Não pode adicionar o mesmo item duas vezes em um pedido', function () {
+	const cpf = new Cpf('835.179.250-04');
+	const order = new Order(cpf);
+	order.addItem(new Item('1', 'Camiseta', 100), 1);
+	expect(() => order.addItem(new Item('1', 'Camiseta', 100), 2)).toThrow(
+		new Error('Cannot add the same item twice.')
+	);
 });

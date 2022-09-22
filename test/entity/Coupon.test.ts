@@ -9,8 +9,8 @@ test('Deve criar um cupom de desconto válido', function () {
 test('Não deve criar um cupom de desconto', function () {
 	expect(() => {
 		new Coupon('Cupom', 0, new Date());
-	}).toThrowError('Invalid discount percentage!');
+	}).toThrowError('Invalid discount percentage.');
 	expect(() => {
 		new Coupon('Cupom', 101, new Date());
-	}).toThrowError('Invalid discount percentage!');
+	}).toThrowError('Invalid discount percentage.');
 });

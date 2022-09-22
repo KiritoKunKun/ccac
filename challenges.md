@@ -1,7 +1,7 @@
 # Testes
 [x] -> Não deve aplicar cupom de desconto expirado
 [x] -> Ao fazer um pedido, a quantidade de um item não pode ser negativa ou zero
-[] -> Ao fazer um pedido, o mesmo item não pode ser informado mais de uma vez
+[x] -> Ao fazer um pedido, o mesmo item não pode ser informado mais de uma vez
 [] -> Nenhuma dimensão do item pode ser negativa
 [] -> O peso do item não pode ser negativo
 [] -> Deve calcular o valor do frete com base nas dimensões (altura, largura e profundidade em cm) e o peso dos produtos (em kg)
