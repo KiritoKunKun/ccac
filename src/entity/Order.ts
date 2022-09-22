@@ -12,7 +12,12 @@ export default class Order {
 	}
 
 	addItem(item: Item, quantity: number) {
+		if (!this.isItemQuantityValid(quantity)) throw new Error('Invalid item quantity!');
 		this.orderItems.push(new OrderItem(item.id, item.price, quantity));
+	}
+
+	private isItemQuantityValid(quantity: number) {
+		return quantity > 0;
 	}
 
 	addCupom(coupon: Coupon) {

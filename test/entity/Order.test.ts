@@ -34,3 +34,10 @@ test('Não deve aplicar um cupom de desconto expirado ao pedido', function () {
 	date.setDate(date.getDate() - 1);
 	expect(() => order.addCupom(new Coupon('VALE20', 20, date))).toThrow(new Error('Expired coupon!'));
 });
+
+test('A quantidade de itens no pedido não pode ser menor ou igual a zero', function () {
+	const cpf = new Cpf('835.179.250-04');
+	const order = new Order(cpf);
+	expect(() => order.addItem(new Item('1', 'Camiseta', 100), -1)).toThrow(new Error('Invalid item quantity!'));
+	expect(() => order.addItem(new Item('1', 'Camiseta', 100), 0)).toThrow(new Error('Invalid item quantity!'));
+});

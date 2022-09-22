@@ -1,6 +1,6 @@
 # Testes
 [x] -> Não deve aplicar cupom de desconto expirado
-[] -> Ao fazer um pedido, a quantidade de um item não pode ser negativa ou zero
+[x] -> Ao fazer um pedido, a quantidade de um item não pode ser negativa ou zero
 [] -> Ao fazer um pedido, o mesmo item não pode ser informado mais de uma vez
 [] -> Nenhuma dimensão do item pode ser negativa
 [] -> O peso do item não pode ser negativo
