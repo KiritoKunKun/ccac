@@ -16,7 +16,12 @@ export default class Order {
 	}
 
 	addCupom(coupon: Coupon) {
+		if (this.isCouponExpired(coupon)) throw new Error('Expired coupon!');
 		this.coupon = coupon;
+	}
+
+	private isCouponExpired(coupon: Coupon) {
+		return coupon.expiresAt.getTime() < new Date().getTime();
 	}
 
 	getTotal() {

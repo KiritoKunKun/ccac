@@ -1,5 +1,5 @@
 export default class Coupon {
-	constructor(readonly code: string, readonly percentage: number) {
+	constructor(readonly code: string, readonly percentage: number, readonly expiresAt: Date) {
 		if (!this.isPercentageValid()) throw new Error('Invalid discount percentage!');
 	}
 
