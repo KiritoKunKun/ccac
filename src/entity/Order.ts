@@ -4,16 +4,19 @@ import Item from './Item';
 import OrderItem from './OrderItem';
 
 export default class Order {
+	items: Item[];
 	orderItems: OrderItem[];
 	coupon?: Coupon;
 
 	constructor(readonly cpf: Cpf) {
+		this.items = [];
 		this.orderItems = [];
 	}
 
 	addItem(item: Item, quantity: number) {
 		if (!this.isItemQuantityValid(quantity)) throw new Error('Invalid item quantity.');
 		if (this.itemAlreadyAdded(item)) throw new Error('Cannot add the same item twice.');
+		this.items.push(item);
 		this.orderItems.push(new OrderItem(item.id, item.price, quantity));
 	}
 
